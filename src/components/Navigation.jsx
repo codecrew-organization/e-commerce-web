@@ -2,18 +2,15 @@ import { Link } from "react-router-dom";
 
 const Navigation = () => {
   return (
-    <nav className="d-flex justify-content-between">
+    <div className="d-flex justify-content-between w-75 mx-auto">
       <div>
         <img src="" alt="Logo" />
       </div>
-
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-          <Link to="/product">Product</Link>
-        </li>
-      </ul>
-    </nav>
+      <nav className="d-flex gap-4">
+        <Link to="/">Home</Link>
+        <Link to="/product">Product</Link>
+      </nav>
+    </div>
   );
 };
 

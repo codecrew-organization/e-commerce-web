@@ -1,27 +1,15 @@
 import AddToCart from "./AddToCart";
 
-const ProductInformation = ({
-  product,
-  setQuantity,
-  setTotalPrice,
-  setCartItem,
-}) => {
-  const { id, name, price, description } = product;
+const ProductInformation = ({ product, addToCart }) => {
+  const { name, price, description } = product;
 
   return (
-    <div>
+    <li className="list-group-item">
       <h2>{name}</h2>
       <p>${price}</p>
       <p>{description}</p>
-      <AddToCart
-        setQuantity={setQuantity}
-        setTotalPrice={setTotalPrice}
-        idd={id}
-        name={name}
-        price={price}
-        setCartItem={setCartItem}
-      />
-    </div>
+      <AddToCart product={product} addToCart={addToCart} />
+    </li>
   );
 };
 

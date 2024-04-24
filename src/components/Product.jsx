@@ -1,39 +1,58 @@
 import { useState } from "react";
 import { productData } from "../data";
-import { Link } from "react-router-dom";
 
 import ProductInformation from "./ProductInformation";
-import Summary from "./Summary";
 import ViewCart from "./ViewCart";
 
-const Product = () => {
+const Products = () => {
   const [products, setProducts] = useState(productData);
   const [quantity, setQuantity] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [cartItem, setCartItem] = useState([]);
-  const [isHidden, setIsHidden] = useState(true);
 
-  const toggleCart = () => {
-    setIsHidden((prev) => !prev);
+  const removeFromCart = (index) => {
+    const newCartItems = [...cartItem];
+    const price = newCartItems[index]?.price || 0;
+
+    newCartItems.splice(index, 1);
+    setCartItem(() => newCartItems);
+    setQuantity((prev) => prev - 1);
+    setTotalPrice((prev) => prev - price);
+  };
+
+  const addToCart = ({ id, name, price }) => {
+    setQuantity((prev) => prev + 1);
+    setTotalPrice((prev) => prev + price);
+    setCartItem((prev) => [...prev, { id, name, price }]);
+  };
+
+  const checkout = () => {
+    setCartItem(() => []);
+    setQuantity(0);
+    setTotalPrice(0);
   };
 
   return (
-    <>
-      <h1>E-COMMERCE PRODUCT PAGE</h1>
-      {/* <Summary quantity={quantity} totalPrice={totalPrice} /> */}
-      <ViewCart useCart={{ cartItem, setCartItem }} isHidden={isHidden} />
-      <button onClick={toggleCart}>My Cart</button>
-      {products.map((product) => (
-        <ProductInformation
-          key={product.id}
-          product={product}
-          setQuantity={setQuantity}
-          setTotalPrice={setTotalPrice}
-          setCartItem={setCartItem}
-        />
-      ))}
-    </>
+    <div className="w-75 mx-auto">
+      <ViewCart
+        cartItem={cartItem}
+        removeFromCart={removeFromCart}
+        quantity={quantity}
+        totalPrice={totalPrice}
+        checkout={checkout}
+      />
+      <button className="btn btn-secondary">My Cart</button>
+      <ul className="list-group">
+        {products.map((product) => (
+          <ProductInformation
+            key={product.id}
+            product={product}
+            addToCart={addToCart}
+          />
+        ))}
+      </ul>
+    </div>
   );
 };
 
-export default Product;
+export default Products;

@@ -1,27 +1,34 @@
-const ViewCart = ({ useCart, isHidden }) => {
-  const { cartItem, setCartItem } = useCart;
+import Summary from "./Summary";
 
-  const checkout = () => {
-    setCartItem(() => []);
-  };
-
-  const removeFromCart = (index) => {
-    console.log("hello World");
-    const newCartItems = [...cartItem];
-    newCartItems.splice(index, 1);
-    setCartItem(() => newCartItems);
-  };
-
+const ViewCart = ({
+  cartItem,
+  removeFromCart,
+  quantity,
+  totalPrice,
+  checkout,
+}) => {
   return (
-    <div hidden={isHidden}>
-      {cartItem.map((item, index) => (
-        <div key={index}>
-          <p>{item.name}</p>
-          <p>{item.price}</p>
-          <button onClick={() => removeFromCart(index)}>remove</button>
-        </div>
-      ))}
-      <button onClick={checkout}>Checkout</button>
+    <div className="d-flex gap-4">
+      <ul className="list-group gap-4 flex-grow-1">
+        {cartItem.map((item, index) => (
+          <li className="list-group-item border" key={index}>
+            <p>{item.name}</p>
+            <p>{item.price}</p>
+            <button
+              className="btn btn-danger"
+              onClick={() => removeFromCart(index)}
+            >
+              remove
+            </button>
+          </li>
+        ))}
+      </ul>
+      <div className="border flex-grow-2 p-4 h-25">
+        <Summary quantity={quantity} totalPrice={totalPrice} />
+        <button className="btn btn-primary" onClick={checkout}>
+          Checkout
+        </button>
+      </div>
     </div>
   );
 };
